@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RequireJS Sample</title>
+        <link rel="shortcut icon" href="http://www.requirejs.org/favicon.png">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+        <!-- data-main attribute tells Require.js to load scripts/app.js after Require.js loads. -->
+        <script data-main="scripts/app" src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>
+        <style>
+            /* Arbitrary styles accommodating the display to fit a Single-Page App format */
+            .jumbotron {
+                padding-top: 18px;
+                padding-bottom: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-md-12">
+                <div class="row text-center">
+                    <div class="jumbotron">
+                        <img src="http://requirejs.org/i/logo.png" alt="RequireJS Logo" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="content"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

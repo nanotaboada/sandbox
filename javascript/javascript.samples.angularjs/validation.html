@@ -1,0 +1,117 @@
+<!doctype html>
+<html data-ng-app="bookshelfApp">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>AngularJS Sample: Validation</title>
+        <link rel="shortcut icon" href="http://www.angularjs.org/favicon.ico">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+        <style type="text/css">
+            /* Arbitrary styles accommodating the display to fit a Single Page App format */
+            .jumbotron {
+                padding-top: 18px;
+                padding-bottom: 18px;
+            }
+            .css-form input.ng-invalid.ng-dirty {
+                background-color: #FA787E;
+            }
+    
+            .css-form input.ng-valid.ng-dirty {
+                background-color: #78FA89;
+            }
+            .css-form.ng-pristine {
+                background-color: white;
+            }            
+        </style>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script>
+            var app = angular.module('bookshelfApp', []);
+
+            app.controller('bookshelfController', function ($scope, $http) {
+                var uri = 'http://nanotaboada.hp.af.cm/books/builder/1';
+                $http.get(uri).success(function (response) {
+                    $scope.catalog = response;
+                    $scope.book = angular.copy($scope.catalog[0]);
+                });
+                $scope.update = function(book) {
+                    if(book.$valid) {
+                        $scope.catalog[0] = angular.copy(book);
+                    }
+                };
+                $scope.reset = function() {
+                    $scope.book = angular.copy($scope.catalog[0]);
+                };
+
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container" data-ng-controller="bookshelfController">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="jumbotron">
+                        <img src="http://angularjs.org/img/AngularJS-large.png" alt="AngularJS Logo" />
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Book</h3>
+                </div>
+                <div class="panel-body">     
+                    <div class="row">
+                        <form name="bookForm" class="css-form" novalidate>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="isbn" class="control-label">ISBN</label>
+                                    <input name="isbn" type="text" class="form-control" data-ng-model="book.isbn" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="title" class="control-label">Title</label>
+                                    <input name="title" type="text" class="form-control" data-ng-model="book.title" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="author" class="control-label">Author</label>
+                                    <input name="author" type="text" class="form-control" data-ng-model="book.author" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="publisher" class="control-label">Publisher</label>
+                                    <input name="publisher" type="text" class="form-control" data-ng-model="book.publisher" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="published" class="control-label">Published</label>
+                                    <input name="published" type="date" class="form-control" data-ng-model="book.published" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="publisher" class="control-label">Pages</label>
+                                    <input name="pages" type="number" min="1" max="9999" class="form-control" data-ng-model="book.pages" required />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <button class="btn btn-default" data-ng-click="update(book)">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                Update
+                            </button>                            
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <button class="btn btn-default" data-ng-click="reset()">
+                                <span class="glyphicon glyphicon-repeat"></span>
+                                Reset
+                            </button>  
+                        </div>               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

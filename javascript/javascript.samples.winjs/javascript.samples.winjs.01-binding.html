@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>WinJS Sample: Binding</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+    <link rel="shortcut icon" href="http://try.buildwinjs.com/favicon.ico" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/winjs/3.0.1/css/ui-light.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/winjs/3.0.1/js/WinJS.js"></script>
+    <style>
+        /* Arbitrary styles accommodating the display to fit a Single Page App format */
+
+        .jumbotron {
+            padding-top: 9px;
+            padding-bottom: 9px;
+            background-color: white;
+            border: 2px solid #432156;
+        }
+
+        #logo {
+            width: auto;
+            height: 200px;
+            /* Ensures aspect ratio */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <div class="container">
+
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <div class="jumbotron">
+                        <img id="logo" src="https://pbs.twimg.com/profile_images/504385093498970112/TTICt6aq_400x400.png" alt="WinJS Logo" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="books" class="table table-hover text-left">
+                        <table class="table">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>ISBN</th>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Published</th>
+                                    <th>Publisher</th>
+                                    <th>Pages</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body"
+                                data-win-control="WinJS.UI.Repeater"
+                                data-win-options="{ data: Data.books }">
+
+                                <tr class="table-body-row">
+                                    <td data-win-bind="textContent: isbn"></td>
+                                    <td data-win-bind="textContent: title"></td>
+                                    <td data-win-bind="textContent: author"></td>
+                                    <td data-win-bind="textContent: published"></td>
+                                    <td data-win-bind="textContent: publisher"></td>
+                                    <td data-win-bind="textContent: pages"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var response = {};
+
+        function callback(responseText, status) {
+            response = JSON.parse(responseText);
+            WinJS.Namespace.define("Data", {
+                books: new WinJS.Binding.List(response.books)
+            });
+            WinJS.Application.onready = function () {
+                WinJS.UI.processAll();
+            };
+            WinJS.Application.start();
+        };
+
+        WinJS.xhr({
+            url: 'http://cloud.nanotaboada.com.ar/books',
+            type: 'GET'
+        }).done(
+            function (result) {
+                callback(result.responseText, result.status);
+            },
+            function (result) {
+                callback(null, result.status);
+            }
+        );
+    </script>
+</body>
+
+</html>

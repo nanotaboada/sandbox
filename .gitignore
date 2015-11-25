@@ -1,0 +1,17 @@
+# .NET
+Dotnet.Samples*/Dotnet.Samples*/StyleCop.Cache
+Dotnet.Samples*/Dotnet.Samples*/[Bb]in
+Dotnet.Samples*/Dotnet.Samples*/[Oo]bj
+Dotnet.Samples*/*.suo
+Dotnet.Samples*/*.docstates
+
+# Mono
+Mono.Samples*/test-results
+Mono.Samples*/*.userprefs
+Mono.Samples*/Mono.Samples*/bin
+Mono.Samples*/Mono.Samples*/test-results
+Mono.Samples*/Mono.Samples*/*.pidb
+
+# Node.js
+node_modules
+newrelic.js

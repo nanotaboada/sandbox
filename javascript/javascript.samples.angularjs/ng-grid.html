@@ -1,0 +1,87 @@
+<!doctype html>
+<html data-ng-app="bookshelfApp">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>AngularJS Sample: ng-grid</title>
+        <link rel="shortcut icon" href="http://www.angularjs.org/favicon.ico">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.7/ng-grid.min.css" rel="stylesheet">
+        <style>
+            /* Arbitraty styles accommodating the display to fit a Single Page App format */
+            .jumbotron {
+                padding-top: 18px;
+                padding-bottom: 18px;
+            }
+            .page-header {
+                margin-top: 0px;
+            }
+            .gridStyle {
+                /* border: 1px solid rgb(212,212,212); */
+                width: auto; 
+                height: 360px;
+            }
+            #description {
+                margin-top: 27px;
+            }
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-resource.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.7/ng-grid.min.js"></script>
+        <script>
+            angular.module('CatalogService', ['ngResource'])
+                .factory('CatalogService', function ($resource) {
+                    return $resource('http://nanotaboada.hp.af.cm/books/builder/99');
+                });
+
+            var app = angular.module('bookshelfApp', ['ngGrid', 'CatalogService']);
+
+            app.controller('bookshelfController', function ($scope, CatalogService) {
+                CatalogService.query(function(data){
+                    $scope.catalog = angular.fromJson(data);
+                });
+                $scope.selectedBook = [];
+                $scope.gridOptions = { 
+                    data: 'catalog',
+                    columnDefs: [
+                        { field:'isbn', displayName:'ISBN' },
+                        { field:'title', displayName:'Title' },
+                        { field:'author', displayName:'Author' },
+                        { field:'published', displayName:'Published', cellFilter: "date:'mediumDate'"},
+                        { field:'publisher', displayName:'Publisher'},
+                        { field:'pages', displayName:'Pages' }
+                    ],
+                    selectedItems: $scope.selectedBook,
+                    multiSelect: false,
+                };
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container" data-ng-controller="bookshelfController">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="jumbotron text-center">
+                        <img src="http://angularjs.org/img/AngularJS-large.png" alt="AngularJS Logo" />
+                    </div>
+                </div>
+            </div>          
+            <div class="row">
+                <div id="grid" class="col-md-12">
+                    <div class="gridStyle" data-ng-grid="gridOptions"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="description" class="well well-sm" data-ng-repeat="book in selectedBook">
+                        <p>{{ book.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

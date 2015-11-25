@@ -1,0 +1,82 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>AngularJS Sample: Directives</title>
+        <link rel="shortcut icon" href="http://www.angularjs.org/favicon.ico">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+        <style>
+            /* Arbitrary styles accommodating the display to fit a Single Page App format */
+            .jumbotron {
+                padding-top: 18px;
+                padding-bottom: 18px;
+            }
+        </style>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
+        <script>
+            var app = angular.module('sampleApp', []);
+
+            function SampleController($scope) {
+                // notice that $scope.elementMessage and $scope.attributeMessage
+                // are defined within the directives.
+            };
+
+            app.directive('sampleElementDirective', function() {
+                return {
+                    restrict: 'E', // element
+                    replace: true,
+                    template: '<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> Sample <strong>{{ elementText }}</strong> directive executed successfully.</div>',
+                    link: function ($scope, element, attributes) {
+                        $scope.elementText = 'element';
+                        console.log('[INFO] ' + $scope.elementText + ' OK.');
+                    }
+                };
+            });
+
+            app.directive('sampleAttributeDirective', function() {
+                return {
+                    restrict: 'A', // attribute
+                    replace: true,
+                    template: '<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> Sample <strong>{{ attributeText }}</strong> directive executed successfully.</div>',
+                    link: function ($scope, element, attributes) {
+                        $scope.attributeText = 'attribute';
+                        console.log('[INFO] ' + $scope.attributeText + ' OK.');
+                    }
+                };
+            });
+        </script>
+    </head>
+    <body data-ng-app="sampleApp">
+        <!--[if lt IE 7]>
+          <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!--[if lt IE 9]>
+          <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.1.0/es5-shim.min.js"></script>
+          <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
+        <![endif]-->
+        <div data-ng-controller="SampleController" class="container" >
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <div class="jumbotron">
+                        <img src="http://angularjs.org/img/AngularJS-large.png" alt="AngularJS Logo" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div sample-attribute-directive ></div>
+                </div>
+                <div class="col-md-6">
+                    <sample-element-directive></sample-element-directive>                    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>JavaScript Sample: SPA</title>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+        <style type="text/css">
+            /* Arbitrary styles accommodating the display to fit a Single Page App format */
+            .jumbotron {
+                padding-top: 9px;
+                padding-bottom: 9px;
+                background: #f5f5f5;
+                border: 1px solid lightgray;
+            }
+            #catalog-panel-body {
+                height: 465px;
+                max-height: 465px;
+                overflow-y: scroll;
+            }
+            button {
+                width: 100%;
+            }
+            .css-form input.ng-invalid.ng-dirty {
+                background-color: #FA787E;
+            }
+
+            .css-form input.ng-valid.ng-dirty {
+                background-color: #78FA89;
+            }
+            .error {
+                color: red;
+            }
+        </style>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+          <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!--[if lt IE 9]>
+          <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.1.0/es5-shim.min.js"></script>
+          <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
+        <![endif]-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="jumbotron">
+                        <h3>Single-Page Application <small>with <a href="http://knockoutjs.com/">KnockoutJS</a></small></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div id="book-panel-heading" class="panel-heading">
+                            <h3 class="panel-title">Book</h3>
+                        </div>
+                        <div id="book-panel-body" class="panel-body">
+                            <div id="book" class="row">
+                                <form id="book-form" name="bookForm" class="css-form" novalidate>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="isbn" class="control-label">ISBN</label>
+                                            <input id="isbn" name="isbn" data-bind="value: catalog.book().isbn" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="title" class="control-label">Title</label>
+                                            <input id="title" name="title" data-bind="value: catalog.book().title" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="author" class="control-label">Author</label>
+                                            <input id="author" name="author" data-bind="value: catalog.book().author" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="publisher" class="control-label">Publisher</label>
+                                            <input id="publisher" name="publisher" data-bind="value: catalog.book().publisher" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="published" class="control-label">Published</label>
+                                            <input id="published" name="published" data-bind="value: moment(catalog.book().published).format('L')" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pages" class="control-label">Pages</label>
+                                            <input id="pages" name="pages" data-bind="value: catalog.book().pages" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="book-panel-footer" class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-3 text-center" title="Create">
+                                    <button id="create" data-bind="enable: catalog.canCreate" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-floppy-save"></span>
+                                    </button>
+                                </div>
+                                <div class="col-md-3 text-center" title="Retrieve">
+                                    <button id="retrieve" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-floppy-open"></span>
+                                    </button>
+                                </div>
+                                <div class="col-md-3 text-center" title="Update">
+                                    <button id="update" data-bind="enable: catalog.canUpdate" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-floppy-saved"></span>
+                                    </button>
+                                </div>
+                                <div class="col-md-3 text-center" title="Delete">
+                                    <button id="delete" data-bind="enable: catalog.canDelete" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-floppy-remove"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-default">
+                        <div id="catalog-panel-heading" class="panel-heading">
+                            <h3 class="panel-title">Catalog</h3>
+                        </div>
+                        <div id="catalog-panel-body" class="panel-body">
+                            <div id="catalog" class="row">
+                                <div class="col-md-12 text-center">
+                                    <table class="table table-hover text-left">
+                                        <thead>
+                                            <tr>
+                                                <th>ISBN</th>
+                                                <th>Title</th>
+                                                <th>Author</th>
+                                                <th>Published</th>
+                                                <th>Publisher</th>
+                                                <th>Pages</th>
+                                            </tr>
+                                        </thead>
+                                        <!-- http://knockoutjs.com/documentation/foreach-binding.html -->
+                                        <tbody data-bind="foreach: catalog.books">
+                                            <tr data-bind="click: $parent.selectBook">
+                                                <td data-bind="text: isbn"></td>
+                                                <td data-bind="text: title"></td>
+                                                <td data-bind="text: author"></td>
+                                                <td data-bind="text: moment(published).format('L')"></td>
+                                                <td data-bind="text: publisher"></td>
+                                                <td data-bind="text: pages"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+
+            /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+             * IMPORTANT                                                       *
+             * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+             * This is by no means the best possible implementation but rather *
+             * a proof of concept for different approaches that might be taken *
+             * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+             // ViewModel
+            function catalogViewModel() {
+                self = this;
+
+                self.books = ko.observableArray();
+                self.book = ko.observable('');
+                self.selectedBook = '';
+
+                self.canCreate = ko.observable(false);
+                self.canRetrieve = ko.observable(true);
+                self.canUpdate = ko.observable(false);
+                self.canDelete = ko.observable(false);
+
+                self.selectBook = function (book) {
+                    self.selectedBook = book;
+                    self.book(ko.toJS(book));
+                    // TODO: ko.computed
+                    self.canCreate(false);
+                    self.canUpdate(true);
+                    self.canDelete(true);
+                };
+
+                self.createBook = function() {
+                    self.books.push(ko.toJS(self.book));
+                    self.canUpdate(false);
+                };
+
+                self.retrieveBook = function() {
+                    var data;
+                    $.getJSON('http://cloud.nanotaboada.com.ar/books/builder/1', function(json) {
+                        data = json[0];
+                        if (data) {
+                            self.book(data);
+                            // TODO: ko.computed
+                            self.canCreate(true);
+                            self.canUpdate(false);
+                        }
+                    });
+                };
+
+                self.retrieveBooks = function() {
+                    var url = 'http://cloud.nanotaboada.com.ar/books';
+                    $.getJSON(url, null, function(data, status, xhr) {
+                        $.each(data.books, function(index, value) {
+                            self.books.push(value);
+                        });
+                    });
+                };
+
+                self.updateBook = function() {
+                    alert('TODO: Implement PUT');
+                };
+
+                self.deleteBook = function() {
+                    self.books.remove(self.selectedBook);
+                    self.book('');
+                    self.canDelete(false);
+                };
+            };
+
+            var catalog = new catalogViewModel();
+            ko.applyBindings(catalog);
+
+            // Validator
+            var validator, min, max;
+            min = 1; // arbitrary
+            max = 9999; // arbitrary
+
+            $(document).ready(function() {
+
+                validator = $("#book-form").validate({
+                    rules: {
+                        isbn: {
+                            required: true,
+                            minlength: min,
+                            maxlength: max
+                        },
+                        title: {
+                            required: true,
+                            minlength: min,
+                            maxlength: max
+                        },
+                        author: {
+                            required: true,
+                            minlength: min,
+                            maxlength: max
+                        },
+                        publisher: {
+                            required: true,
+                            minlength: min,
+                            maxlength: max
+                        },
+                        published: {
+                            required: true
+                        },
+                        pages: {
+                            required: true,
+                            number: true,
+                            min: min,
+                            max: max
+                        }
+                    }
+                });
+
+                catalog.retrieveBooks();
+            });
+
+            $('#create').on('click', function() {
+                if (!$("#book-form").valid()) {
+                    return false;
+                }
+                catalog.createBook();
+            });
+
+            $('#retrieve').on('click', function() {
+                validator.resetForm();
+                catalog.retrieveBook();
+            });
+
+            $('#update').on('click', function() {
+                if (!$("#book-form").valid()) {
+                    return false;
+                }
+                catalog.updateBook();
+            });
+
+            $('#delete').on('click', function() {
+                catalog.deleteBook();
+            });
+
+        </script>
+    </body>
+</html>
