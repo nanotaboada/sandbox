@@ -15,3 +15,5 @@ Mono.Samples*/Mono.Samples*/*.pidb
 # Node.js
 node_modules
 newrelic.js
+
+.DS_Store
