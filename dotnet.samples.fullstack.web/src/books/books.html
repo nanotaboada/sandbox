@@ -1,4 +1,4 @@
-<table class="table table-hover text-left">
+<table class="table text-left">
     <thead>
         <tr>
             <th>ISBN</th>
@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr data-ng-repeat="book in books">
+        <tr data-ng-repeat="book in books" ng-dblclick="retrieveBook({ isbn: book.isbn })" ng-click="setSelectedIsbn(book.isbn)" ng-class="{ active: book.isbn === selectedIsbn }">
             <td>{{ book.isbn }}</td>
             <td>{{ book.title }}</td>
             <td>{{ book.author }}</td>

@@ -1,0 +1,11 @@
+<div id="book" class="row">
+    <div class="col-md-4 text-center">
+        <img class="img-fluid img-thumbnail" src="http://placehold.it/300x400" title="Placehold.it">
+    </div>
+    <div class="col-md-8">
+        <h3>{{ book.title }} : {{ book.subtitle }}</h3>
+        <h4>By <strong>{{ book.author }}</strong></h4>
+        <blockquote>{{ book.description }}</blockquote>
+        <p>{{ book.pages }} pages. Published by {{ book.publisher }} on {{ book.published | date:'mediumDate' }}</p>
+    </div>
+</div>

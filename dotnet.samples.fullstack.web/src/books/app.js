@@ -4,7 +4,11 @@ angular.module('booksApp').config(function($stateProvider) {
     $stateProvider.state('books', {
         url: '/books',
         templateUrl: 'books/books.html',
-        controller: 'RetrieveAllController'
+        controller: 'RetrieveAllBooksController'
+    }).state('book', {
+        url: '/book/:isbn',
+        templateUrl: 'books/book.html',
+        controller: 'RetrieveBookController'
     });
 }).run(function($state) {
     $state.go('books');
