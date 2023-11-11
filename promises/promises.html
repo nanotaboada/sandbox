@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises in JavaScript</title>
+</head>
+<body>
+    <h1>Synchronous content</h1>
+    <p id="text"></p>
+    <h1>Asynchronous content (3 sec delay)</h1>
+    <pre id="json"></pre>
+</body>
+<script src="promises.js"></script>
+<script type="module">
+    document.getElementById("json").innerHTML = await getTeam();
+</script>
+<script>
+    document.getElementById("text").innerHTML = "The quick brown fox jumps over the lazy dog.";
+</script>
+</html>
