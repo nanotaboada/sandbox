@@ -1,13 +1,5 @@
 namespace CountingSort;
 
-/* -----------------------------------------------------------------------------
-    Counting Sort Algorithm
-
-    Big O notation
-    - Space complexity O(k)
-    - Average-case Time complexity O(n+k)
------------------------------------------------------------------------------ */
-
 public static class CountingSort
 {
     public static int[] Sort(int[] array)
